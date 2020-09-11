@@ -31,7 +31,11 @@ public class Informacion extends AppCompatActivity {
             System.out.println(mapeo_info);
             graficaBarras = findViewById(R.id.graficoBarras);
             TextView nombretext = findViewById(R.id.txtViewName);
+            TextView fullnametext = findViewById(R.id.txtViewFullName);
+
             nombretext.setText(mapeo_info.get("name"));
+            fullnametext.setText(mapeo_info.get("full-name"));
+
             List<BarEntry> entradas = new ArrayList<>();
             entradas.add(new BarEntry(0f,Integer.parseInt(Objects.requireNonNull(mapeo_info.get("intelligence")))));
             entradas.add(new BarEntry(1f,Integer.parseInt(Objects.requireNonNull(mapeo_info.get("strength")))));

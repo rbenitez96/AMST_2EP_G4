@@ -27,6 +27,7 @@ public class Heroes extends AppCompatActivity {
     String busqueda = "";
     private static String url_adress = "https://superheroapi.com/api/";
     private String token = "3274762752579397/";
+    HashMap<String,String> mapeo_info =  new HashMap<String, String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +62,13 @@ public class Heroes extends AppCompatActivity {
                             public void onClick(View view) {
                                 try {
                                     String url_power = url_adress + token + "/" + id + "/powerstats";
+                                    String url_bio = url_adress + token + "/" + id + "/biography";
                                     JsonObjectRequest request2 = new JsonObjectRequest(Request.Method.GET, url_power, null, new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
 
                                             try {
-                                                HashMap<String,String> mapeo_info =  new HashMap<String, String>();
+
                                                 mapeo_info.put("name",(response.getString("name")));
                                                 mapeo_info.put("intelligence",(response.getString("intelligence")));
                                                 mapeo_info.put("strength",(response.getString("strength")));
@@ -74,6 +76,24 @@ public class Heroes extends AppCompatActivity {
                                                 mapeo_info.put("durability",(response.getString("durability")));
                                                 mapeo_info.put("power",(response.getString("power")));
                                                 mapeo_info.put("combat",(response.getString("combat")));
+                                                Intent informa = new Intent(Heroes.this, Informacion.class);
+                                                informa.putExtra("map_info",mapeo_info);
+                                                //startActivity(informa);
+                                                System.out.println(mapeo_info);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, null);
+                                    JsonObjectRequest request3 = new JsonObjectRequest(Request.Method.GET, url_bio, null, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                mapeo_info.put("full-name",(response.getString("full-name")));
                                                 Intent informa = new Intent(Heroes.this, Informacion.class);
                                                 informa.putExtra("map_info",mapeo_info);
                                                 startActivity(informa);
@@ -85,7 +105,9 @@ public class Heroes extends AppCompatActivity {
 
                                         }
                                     }, null);
+
                                     requestQueue.add(request2);
+                                    requestQueue.add(request3);
 
                                 } finally {
 
